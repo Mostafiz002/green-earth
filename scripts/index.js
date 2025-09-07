@@ -1,3 +1,30 @@
+//load modal
+const loadLevelWord = (id) => {
+  fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
+    .then((res) => res.json())
+    .then((data) => displayPlantDetails(data.plants));
+};
+
+const displayPlantDetails = (plant) => {
+  const detailsContainer = document.getElementById("details-container");
+    detailsContainer.innerHTML = `
+            <div class="space-y-3">
+              <h3 class="text-xl font-bold text-black">${plant.name}</h3>
+              <img class="w-full h-[300px] object-cover rounded-lg" src="${plant.image}" alt="">
+              <p class="-mt-1 text-[12px] text-gray-600">
+                <span class="font-bold text-black">Category: </span>${plant.category}
+                </p>
+              <p class="-mt-1 text-[12px] text-gray-600">
+                <span class="font-bold text-black">Price: </span>৳${plant.price}
+                </p>
+              <p class="-mt-1 text-[12px] text-gray-600">
+                <span class="font-bold text-black">Description: </span>${plant.description}
+                </p>
+            </div>
+    `;
+  document.getElementById("word_modal").showModal();
+};
+
 // category
 const loadCategories = async () => {
   const res = await fetch(
@@ -40,7 +67,7 @@ const displayPlants = (plants) => {
         <div class="bg-white rounded-2xl p-4 space-y-3 h-full flex flex-col justify-between">
               <div class="space-y-3">
                 <img class="rounded-lg h-[200px] object-cover w-full" src="${plant.image}" alt="" />
-                <h3 class="text-black font-semibold text-sm">${plant.name}</h3>
+                <h3 onclick="loadLevelWord(${plant.id})" class="text-black cursor-pointer font-semibold text-sm">${plant.name}</h3>
                 <p class="-mt-1 text-[12px] text-[#1F2937]">
                 ${plant.description}
                 </p>
@@ -82,7 +109,7 @@ const displaySpecificCategory = (plants) => {
         <div class="bg-white rounded-2xl p-4 space-y-3 h-full flex flex-col justify-between">
               <div class="space-y-3">
                 <img class="rounded-lg h-[200px] object-cover w-full" src="${plant.image}" alt="" />
-                <h3 class="text-black font-semibold text-sm">${plant.name}</h3>
+                <h3 onclick="loadLevelWord(${plant.id})" class="text-black cursor-pointer font-semibold text-sm">${plant.name}</h3>
                 <p class="-mt-1 text-[12px] text-[#1F2937]">
                 ${plant.description}
                 </p>
