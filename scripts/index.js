@@ -89,7 +89,7 @@ const displayPlants = (plants) => {
                 </p>
                 <p class="text-sm font-semibold"><span class="text-[11px] font-bold">৳</span>${plant.price}</p>
               </div>
-              <button
+              <button id="cart-btn-${plant.id}" onclick="addToCart(${plant.id}, '${plant.name}', ${plant.price})"
                 class="btn rounded-3xl w-full py-3 px-5 bg-[#15803D] text-white text-sm border-none shadow-none hover:bg-[#229c4d]"
               >
                 Plant a Tree
@@ -137,7 +137,7 @@ const displaySpecificCategory = (plants) => {
                 </p>
                 <p class="text-sm font-semibold"><span class="text-[11px] font-bold">৳</span>${plant.price}</p>
               </div>
-              <button
+              <button id="cart-btn-${plant.id}" onclick="addToCart(${plant.id}, '${plant.name}', ${plant.price})"
                 class="btn rounded-3xl w-full py-3 px-5 bg-[#15803D] text-white text-sm border-none shadow-none hover:bg-[#229c4d]"
               >
                 Plant a Tree
@@ -157,6 +157,29 @@ document.getElementById("all-category").addEventListener("click", () => {
   lessonButtons.forEach((btn) => btn.classList.remove("active"));
   allCategoryBtn.classList.add("active");
 });
+
+function addToCart(id, name, price) {
+  const cartContainer = document.getElementById("cartContainer");
+
+  const div = document.createElement("div");
+  div.className =
+    "flex justify-between items-center mt-2 py-2 px-3 bg-[#F0FDF4] rounded-lg";
+  div.innerHTML = `
+    <div class="space-y-1.5">
+      <h5 class="text-black font-semibold text-sm">${name}</h5>
+      <p class="text-gray-400">৳${price} x 1</p>
+    </div>
+    <div>
+      <i class="fa-solid fa-x text-gray-400 cursor-pointer"></i>
+    </div>
+  `;
+
+  cartContainer.appendChild(div);
+
+  div.querySelector("i").addEventListener("click", () => {
+    div.remove();
+  });
+}
 
 loadCategories();
 loadPlants();
