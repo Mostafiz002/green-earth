@@ -1,3 +1,11 @@
+// remove active class
+const removeActive = () => {
+  const lessonButtons = document.querySelectorAll(".category-btn");
+  const allCategoryBtn = document.getElementById("all-category");
+  lessonButtons.forEach((btn) => btn.classList.remove("active"));
+  allCategoryBtn.classList.remove("active");
+};
+
 //load modal
 const loadLevelWord = (id) => {
   fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
@@ -7,7 +15,7 @@ const loadLevelWord = (id) => {
 
 const displayPlantDetails = (plant) => {
   const detailsContainer = document.getElementById("details-container");
-    detailsContainer.innerHTML = `
+  detailsContainer.innerHTML = `
             <div class="space-y-3">
               <h3 class="text-xl font-bold text-black">${plant.name}</h3>
               <img class="w-full h-[300px] object-cover rounded-lg" src="${plant.image}" alt="">
@@ -41,8 +49,8 @@ const displayCategories = (categories) => {
   categories.forEach((cat) => {
     const categoryDiv = document.createElement("div");
     categoryDiv.innerHTML = `
-      <p onclick="loadSpecificCategory(${cat.id})" 
-        class="py-2 px-2.5 rounded-sm text-black hover:bg-[#15803D] hover:text-white cursor-pointer text-base"
+      <p id="category_${cat.id}" onclick="loadSpecificCategory(${cat.id})" 
+        class="category-btn py-2 px-2.5 rounded-sm text-black hover:bg-[#15803D] hover:text-white cursor-pointer text-base"
       >
         ${cat.category_name}
       </p>
@@ -64,7 +72,7 @@ const displayPlants = (plants) => {
   plants.forEach((plant) => {
     const cardDiv = document.createElement("div");
     cardDiv.innerHTML = `
-        <div class="bg-white rounded-2xl p-4 space-y-3 h-full flex flex-col justify-between">
+        <div class="bg-white rounded-2xl p-4 space-y-3 h-full flex flex-col justify-between border border-[#e8e8e8] shadow-[6px_6px_12px_#c5c5c5,-6px_-6px_12px_#ffffff] transition-all duration-300 hover:border-white ">
               <div class="space-y-3">
                 <img class="rounded-lg h-[200px] object-cover w-full" src="${plant.image}" alt="" />
                 <h3 onclick="loadLevelWord(${plant.id})" class="text-black cursor-pointer font-semibold text-sm">${plant.name}</h3>
@@ -97,7 +105,13 @@ const displayPlants = (plants) => {
 const loadSpecificCategory = (id) => {
   fetch(`https://openapi.programming-hero.com/api/category/${id}`)
     .then((res) => res.json())
-    .then((data) => displaySpecificCategory(data.plants));
+    .then((data) => {
+      removeActive();
+      const clickBtn = document.getElementById(`category_${id}`);
+      clickBtn.classList.add("active");
+
+      displaySpecificCategory(data.plants);
+    });
 };
 
 const displaySpecificCategory = (plants) => {
@@ -106,7 +120,7 @@ const displaySpecificCategory = (plants) => {
   plants.forEach((plant) => {
     const cardDiv = document.createElement("div");
     cardDiv.innerHTML = `
-        <div class="bg-white rounded-2xl p-4 space-y-3 h-full flex flex-col justify-between">
+        <div class="bg-white rounded-2xl p-4 space-y-3 h-full  flex flex-col justify-between border border-[#e8e8e8] shadow-[6px_6px_12px_#c5c5c5,-6px_-6px_12px_#ffffff] transition-all duration-300 hover:border-white ">
               <div class="space-y-3">
                 <img class="rounded-lg h-[200px] object-cover w-full" src="${plant.image}" alt="" />
                 <h3 onclick="loadLevelWord(${plant.id})" class="text-black cursor-pointer font-semibold text-sm">${plant.name}</h3>
@@ -134,6 +148,15 @@ const displaySpecificCategory = (plants) => {
     cardContainer.appendChild(cardDiv);
   });
 };
+
+// all tree btn
+document.getElementById("all-category").addEventListener("click", () => {
+  loadPlants();
+  const lessonButtons = document.querySelectorAll(".category-btn");
+  const allCategoryBtn = document.getElementById("all-category");
+  lessonButtons.forEach((btn) => btn.classList.remove("active"));
+  allCategoryBtn.classList.add("active");
+});
 
 loadCategories();
 loadPlants();
