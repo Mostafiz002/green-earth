@@ -6,6 +6,17 @@ const removeActive = () => {
   allCategoryBtn.classList.remove("active");
 };
 
+//spinner
+const manageSpinner = (status) => {
+  if (status == true) {
+    document.getElementById("spinner").classList.remove("hidden");
+    document.getElementById("card-container").classList.add("hidden");
+  } else {
+    document.getElementById("card-container").classList.remove("hidden");
+    document.getElementById("spinner").classList.add("hidden");
+  }
+};
+
 //load modal
 const loadLevelWord = (id) => {
   fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
@@ -61,6 +72,7 @@ const displayCategories = (categories) => {
 
 // load all plants
 const loadPlants = () => {
+  manageSpinner(true);
   fetch("https://openapi.programming-hero.com/api/plants")
     .then((res) => res.json())
     .then((data) => displayPlants(data.plants));
@@ -99,10 +111,12 @@ const displayPlants = (plants) => {
         `;
     cardContainer.appendChild(cardDiv);
   });
+  manageSpinner(false);
 };
 
 //specific category functionality
 const loadSpecificCategory = (id) => {
+  manageSpinner(true);
   fetch(`https://openapi.programming-hero.com/api/category/${id}`)
     .then((res) => res.json())
     .then((data) => {
@@ -120,7 +134,7 @@ const displaySpecificCategory = (plants) => {
   plants.forEach((plant) => {
     const cardDiv = document.createElement("div");
     cardDiv.innerHTML = `
-        <div class="bg-white rounded-2xl p-4 space-y-3 h-full  flex flex-col justify-between border border-[#e8e8e8] shadow-[6px_6px_12px_#c5c5c5,-6px_-6px_12px_#ffffff] transition-all duration-300 hover:border-white ">
+        <div class="bg-white max-h-[520px] rounded-2xl p-4 space-y-3 h-full  flex flex-col justify-between border border-[#e8e8e8] shadow-[6px_6px_12px_#c5c5c5,-6px_-6px_12px_#ffffff] transition-all duration-300 hover:border-white ">
               <div class="space-y-3">
                 <img class="rounded-lg h-[200px] object-cover w-full" src="${plant.image}" alt="" />
                 <h3 onclick="loadLevelWord(${plant.id})" class="text-black cursor-pointer font-semibold text-sm">${plant.name}</h3>
@@ -147,6 +161,7 @@ const displaySpecificCategory = (plants) => {
         `;
     cardContainer.appendChild(cardDiv);
   });
+  manageSpinner(false);
 };
 
 // all tree btn
