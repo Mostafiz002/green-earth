@@ -107,7 +107,7 @@ const displayPlants = (plants) => {
               <button id="cart-btn-${plant.id}" onclick="addToCart(${plant.id}, '${plant.name}', ${plant.price})"
                 class="btn rounded-3xl w-full py-3 px-5 bg-[#15803D] text-white text-sm border-none shadow-none hover:bg-[#229c4d]"
               >
-                Plant a Tree
+                Add to Cart
               </button>
               </div>
             </div>
@@ -157,7 +157,7 @@ const displaySpecificCategory = (plants) => {
               <button id="cart-btn-${plant.id}" onclick="addToCart(${plant.id}, '${plant.name}', ${plant.price})"
                 class="btn rounded-3xl w-full py-3 px-5 bg-[#15803D] text-white text-sm border-none shadow-none hover:bg-[#229c4d]"
               >
-                Plant a Tree
+                Add to Cart
               </button>
               </div>
             </div>
