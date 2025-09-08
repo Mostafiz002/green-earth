@@ -1,3 +1,6 @@
+let totalDivCreated = false;
+let totalPrice = 0;
+
 // remove active class
 const removeActive = () => {
   const lessonButtons = document.querySelectorAll(".category-btn");
@@ -173,27 +176,52 @@ document.getElementById("all-category").addEventListener("click", () => {
   allCategoryBtn.classList.add("active");
 });
 
+// cart functionality
+
 function addToCart(id, name, price) {
   const cartContainer = document.getElementById("cartContainer");
-
+  // cart item
   const div = document.createElement("div");
   div.className =
     "flex justify-between items-center mt-2 py-2 px-3 bg-[#F0FDF4] rounded-lg";
   div.innerHTML = `
     <div class="space-y-1.5">
       <h5 class="text-black font-semibold text-sm">${name}</h5>
-      <p class="text-gray-400">৳${price} x 1</p>
+      <p class="text-gray-500">৳${price} x 1</p>
     </div>
     <div>
-      <i class="fa-solid fa-x text-gray-400 cursor-pointer"></i>
+      <i class="fa-solid fa-x text-gray-500 cursor-pointer"></i>
     </div>
   `;
 
   cartContainer.appendChild(div);
 
+  //total price
+  if (!totalDivCreated) {
+    const totalContainer = document.getElementById("totalContainer");
+    const totalDiv = document.createElement("div");
+    totalDiv.innerHTML = `
+              <div
+                class="mt-4 pt-2.5 border-t-gray-300 border-t flex justify-between items-center"
+              >
+                <p class="font-semibold">Total:</p>
+                <p class="font-medium">৳<span id="total-price">0</span></p>
+              </div>
+    `;
+    totalContainer.appendChild(totalDiv);
+
+    totalDivCreated = true;
+  }
+
   div.querySelector("i").addEventListener("click", () => {
+    totalPrice -= price;
+    document.getElementById("total-price").innerText = totalPrice;
+
     div.remove();
   });
+
+  totalPrice += price;
+  document.getElementById("total-price").innerText = totalPrice;
 }
 
 loadCategories();
